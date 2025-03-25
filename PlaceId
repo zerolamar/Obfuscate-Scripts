@@ -1,6 +1,6 @@
 local placeid = game.PlaceId
-if placeid == 14696958202 then --// Trench War
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/zerolamar/Obfuscate/refs/heads/main/Trench-War"))()
-elseif placeid == 5310443220 then --// Naval Warfare
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/decryp1/God-Tycoon-Script/refs/heads/main/The%20Script'))()
+if placeid == 6654918151 then --// Trench War
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/zerolamar/Nonchalant-Hub/refs/heads/main/Trench-War!?token=GHSAT0AAAAAADAJQ6IFB4MSXL5Z3WTV5HAIZ7CIDDQ"))()
+elseif placeid == 3678761576 then --// Entrenched WW1
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/zerolamar/Nonchalant-Hub/refs/heads/main/Entrenched%20WW1?token=GHSAT0AAAAAADAJQ6IES4JJOZEJX7D7S7GMZ7CICSQ"))()
 end
