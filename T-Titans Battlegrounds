@@ -1,0 +1,590 @@
+--// Services
+local Camera = workspace.CurrentCamera
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local LocalPlayer = Players.LocalPlayer
+local Holding = false
+--// _.G
+_G.AimbotEnabled = false
+_G.TeamCheck = false -- If set to true then the script would only lock your aim at enemy team members.
+_G.AimPart = "Head" -- Where the aimbot script would lock at.
+_G.Sensitivity = 0 -- How many seconds it takes for the aimbot script to officially lock onto the target's aimpart.
+
+_G.CircleSides = 64 -- How many sides the FOV circle would have.
+_G.CircleColor = Color3.fromRGB(255, 255, 255) -- (RGB) Color that the FOV circle would appear as.
+_G.CircleTransparency = 0.7 -- Transparency of the circle.
+_G.CircleRadius = 80 -- The radius of the circle / FOV.
+_G.CircleFilled = false -- Determines whether or not the circle is filled.
+_G.CircleVisible = false -- Determines whether or not the circle is visible.
+_G.CircleThickness = 0 -- The thickness of the circle.
+
+local FOVCircle = Drawing.new("Circle")
+FOVCircle.Position = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+FOVCircle.Radius = _G.CircleRadius
+FOVCircle.Filled = _G.CircleFilled
+FOVCircle.Color = _G.CircleColor
+FOVCircle.Visible = _G.CircleVisible
+FOVCircle.Radius = _G.CircleRadius
+FOVCircle.Transparency = _G.CircleTransparency
+FOVCircle.NumSides = _G.CircleSides
+FOVCircle.Thickness = _G.CircleThickness
+
+local function GetClosestPlayer()
+	local MaximumDistance = _G.CircleRadius
+	local Target = nil
+
+	for _, v in next, Players:GetPlayers() do
+		if v.Name ~= LocalPlayer.Name then
+			if _G.TeamCheck == true then
+				if v.Team ~= LocalPlayer.Team then
+					if v.Character ~= nil then
+						if v.Character:FindFirstChild("HumanoidRootPart") ~= nil then
+							if v.Character:FindFirstChild("Humanoid") ~= nil and v.Character:FindFirstChild("Humanoid").Health ~= 0 then
+								local ScreenPoint = Camera:WorldToScreenPoint(v.Character:WaitForChild("HumanoidRootPart", math.huge).Position)
+								local VectorDistance = (Vector2.new(UserInputService:GetMouseLocation().X, UserInputService:GetMouseLocation().Y) - Vector2.new(ScreenPoint.X, ScreenPoint.Y)).Magnitude
+								
+								if VectorDistance < MaximumDistance then
+									Target = v
+								end
+							end
+						end
+					end
+				end
+			else
+				if v.Character ~= nil then
+					if v.Character:FindFirstChild("HumanoidRootPart") ~= nil then
+						if v.Character:FindFirstChild("Humanoid") ~= nil and v.Character:FindFirstChild("Humanoid").Health ~= 0 then
+							local ScreenPoint = Camera:WorldToScreenPoint(v.Character:WaitForChild("HumanoidRootPart", math.huge).Position)
+							local VectorDistance = (Vector2.new(UserInputService:GetMouseLocation().X, UserInputService:GetMouseLocation().Y) - Vector2.new(ScreenPoint.X, ScreenPoint.Y)).Magnitude
+							
+							if VectorDistance < MaximumDistance then
+								Target = v
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+
+	return Target
+end
+
+UserInputService.InputBegan:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseButton2 then
+        Holding = true
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseButton2 then
+        Holding = false
+    end
+end)
+
+RunService.RenderStepped:Connect(function()
+    FOVCircle.Position = Vector2.new(UserInputService:GetMouseLocation().X, UserInputService:GetMouseLocation().Y)
+    FOVCircle.Radius = _G.CircleRadius
+    FOVCircle.Filled = _G.CircleFilled
+    FOVCircle.Color = _G.CircleColor
+    FOVCircle.Visible = _G.CircleVisible
+    FOVCircle.Radius = _G.CircleRadius
+    FOVCircle.Transparency = _G.CircleTransparency
+    FOVCircle.NumSides = _G.CircleSides
+    FOVCircle.Thickness = _G.CircleThickness
+
+    if Holding == true and _G.AimbotEnabled == true then
+        TweenService:Create(Camera, TweenInfo.new(_G.Sensitivity, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {CFrame = CFrame.new(Camera.CFrame.Position, GetClosestPlayer().Character[_G.AimPart].Position)}):Play()
+    end
+end)
+
+-- Global configuration variables
+-- For players
+_G.HeadSize = 50 / 10         -- Default size: 5 (50 divided by 10)
+_G.HeadTransparency = 0.7     -- Default transparency: 0.7
+_G.HeadColor = Color3.fromRGB(255, 255, 255)
+_G.Enabled = false            -- Toggle for players
+
+-- For NPCs
+_G.NPCHeadSize = 50 / 10        -- Default size: 5 (50 divided by 10)
+_G.NPCHeadTransparency = 0.7    -- Default transparency: 0.7
+_G.NPCHeadColor = Color3.fromRGB(255, 255, 255)
+_G.NPCEnabled = false           -- Toggle for NPCs
+
+-- Tables to store original properties of players' and NPCs' HumanoidRootParts
+local originalProps = {}
+local originalNPCProps = {}
+
+--// UI Libary
+local Library = loadstring(game:HttpGet("https://github.com/1dontgiveaf/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1dontgiveaf/Fluent/main/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1dontgiveaf/Fluent/main/Addons/InterfaceManager.lua"))()
+ Fluent:Notify({
+        Title = "Nonchalant Hub",
+        Content = "Loading...",
+        Duration = 5 
+    })
+wait(7)
+local Window = Fluent:CreateWindow({
+    Title = "T-Titans Battlegrounds | Nonchalant Hub",
+    SubTitle = "",
+    TabWidth = 150,
+    Size = UDim2.fromOffset(530, 380),
+    Acrylic = true,
+    Theme = "Darker",
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
+
+--// Tabs
+local Tabs = {
+    Autofarm = Window:AddTab({ Title = "Autofarm", Icon = "accessibility" }),
+    Misc = Window:AddTab({ Title = "Misc", Icon = "folder-open" }),
+    Teleports = Window:AddTab({ Title = "Teleports", Icon = "waves" }),
+    Player = Window:AddTab({ Title = "Player", Icon = "person-standing" })
+}
+
+--// Autofarm
+Tabs.Autofarm:AddParagraph({
+    Title = "Note :",
+    Content = "When you die please turn it off and chose your charater then press the autofarm. Enjoy the script ya'll! :)"
+})
+
+Tabs.Autofarm:AddButton({
+    Title = "Autofarm GUI",
+    Description = "Click to execute.",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/ZcVfUKLe"))()
+    end
+})
+
+--// Misc
+local Section = Tabs.Misc:AddSection("Hitbox")
+local Slider = Tabs.Misc:AddSlider("Slider", 
+{
+    Title = "Size",
+    Description = "Change your hitbox Colour!.",
+    Default = 50,
+    Min = 0,
+    Max = 500,
+    Rounding = 1,
+    Callback = function(Value)
+        _G.HeadSize = Value
+    end
+})
+
+local Slider = Tabs.Misc:AddSlider("Slider", 
+{
+    Title = "Transparency",
+    Description = "Change your hitbox Transparency!.",
+    Default = 0.7,
+    Min = 0,
+    Max = 1,
+    Rounding = 1,
+    Callback = function(Value)
+        _G.HeadTransparency = Value
+    end
+})
+
+local Colorpicker = Tabs.Misc:AddColorpicker("Colorpicker", {
+    Title = "Colour",
+    Description = "Change your hitbox Colour!",
+    Default = Color3.fromRGB(255, 255, 255),
+    Callback = function(color)
+       _G.HeadColor = color
+    end
+})
+
+local Toggle = Tabs.Misc:AddToggle("MyToggle", 
+{
+    Title = "Turn On/Off", 
+    Description = "Turns on/off hitbox!",
+    Default = false,
+    Callback = function(state)
+	if state then
+	  _G.Enabled = true
+	else
+	    _G.Enabled = false
+        end
+    end 
+})
+
+-- Listen for the H key press to toggle the hitbox modifications for players.
+local UserInputService = game:GetService("UserInputService")
+UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
+    if gameProcessedEvent then return end
+    if input.KeyCode == Enum.KeyCode.H then
+        _G.Enabled = not _G.Enabled
+    end
+end)
+
+-- Utility function to capture the original properties of a part.
+local function captureOriginalProps(hrp)
+    return {
+        Size = hrp.Size,
+        Transparency = hrp.Transparency,
+        BrickColor = hrp.BrickColor,
+        Material = hrp.Material,
+        CanCollide = hrp.CanCollide
+    }
+end
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+local LocalPlayer = Players.LocalPlayer
+
+-- RenderStepped loop to update or revert hitbox modifications for players.
+RunService.RenderStepped:Connect(function()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character then
+            local success, err = pcall(function()
+                local character = player.Character
+                local hrp = character:FindFirstChild("HumanoidRootPart")
+                local humanoid = character:FindFirstChildOfClass("Humanoid")
+                if hrp and humanoid then
+                    -- Check if the player's character is sitting.
+                    if humanoid.Sit then
+                        if originalProps[player.UserId] then
+                            local props = originalProps[player.UserId]
+                            hrp.Size = props.Size
+                            hrp.Transparency = props.Transparency
+                            hrp.BrickColor = props.BrickColor
+                            hrp.Material = props.Material
+                            hrp.CanCollide = props.CanCollide
+                            originalProps[player.UserId] = nil
+                        end
+                        return
+                    end
+
+                    if _G.Enabled then
+                        -- Store original properties if not already stored.
+                        if not originalProps[player.UserId] then
+                            originalProps[player.UserId] = captureOriginalProps(hrp)
+                        end
+                        -- Apply hitbox modifications for players.
+                        hrp.Size = Vector3.new(_G.HeadSize, _G.HeadSize, _G.HeadSize)
+                        hrp.Transparency = _G.HeadTransparency
+                        hrp.Color = _G.HeadColor
+                        hrp.Material = Enum.Material.Neon
+                        hrp.CanCollide = false
+                    else
+                        -- Revert to original properties if they were stored.
+                        if originalProps[player.UserId] then
+                            local props = originalProps[player.UserId]
+                            hrp.Size = props.Size
+                            hrp.Transparency = props.Transparency
+                            hrp.BrickColor = props.BrickColor
+                            hrp.Material = props.Material
+                            hrp.CanCollide = props.CanCollide
+                            originalProps[player.UserId] = nil
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+-- RenderStepped loop to update or revert hitbox modifications for NPCs.
+RunService.RenderStepped:Connect(function()
+    for _, model in ipairs(Workspace:GetChildren()) do
+        if model:IsA("Model") then
+            -- Process only models that are not associated with a Player.
+            if not Players:GetPlayerFromCharacter(model) then
+                local hrp = model:FindFirstChild("HumanoidRootPart")
+                local humanoid = model:FindFirstChildOfClass("Humanoid")
+                if hrp and humanoid then
+                    local success, err = pcall(function()
+                        -- Check if the NPC is sitting.
+                        if humanoid.Sit then
+                            if originalNPCProps[model] then
+                                local props = originalNPCProps[model]
+                                hrp.Size = props.Size
+                                hrp.Transparency = props.Transparency
+                                hrp.BrickColor = props.BrickColor
+                                hrp.Material = props.Material
+                                hrp.CanCollide = props.CanCollide
+                                originalNPCProps[model] = nil
+                            end
+                            return
+                        end
+
+                        if _G.NPCEnabled then
+                            if not originalNPCProps[model] then
+                                originalNPCProps[model] = captureOriginalProps(hrp)
+                            end
+                            -- Apply hitbox modifications for NPCs.
+                            hrp.Size = Vector3.new(_G.NPCHeadSize, _G.NPCHeadSize, _G.NPCHeadSize)
+                            hrp.Transparency = _G.NPCHeadTransparency
+                            hrp.Color = _G.NPCHeadColor
+                            hrp.Material = Enum.Material.Neon
+                            hrp.CanCollide = false
+                        else
+                            if originalNPCProps[model] then
+                                local props = originalNPCProps[model]
+                                hrp.Size = props.Size
+                                hrp.Transparency = props.Transparency
+                                hrp.BrickColor = props.BrickColor
+                                hrp.Material = props.Material
+                                hrp.CanCollide = props.CanCollide
+                                originalNPCProps[model] = nil
+                            end
+                        end
+                    end)
+                end
+            end
+        end
+    end
+end)
+
+local Section = Tabs.Misc:AddSection("Aimbot")
+local Toggle = Tabs.Misc:AddToggle("MyToggle", 
+{
+    Title = "Aimbot", 
+    Description = "Must Be First Person!",
+    Default = false,
+    Callback = function(state)
+	if state then
+	    _G.AimbotEnabled = true
+	else
+	    _G.AimbotEnabled = false
+        end
+    end 
+})
+
+local Toggle = Tabs.Misc:AddToggle("MyToggle", 
+{
+    Title = "Team Check", 
+    Description = "Checks If Aimbot is Locking Onto Teamates.",
+    Default = false,
+    Callback = function(state)
+	if state then
+	    _G.TeamCheck = true
+	else
+	    _G.TeamCheck = false
+        end
+    end 
+})
+
+local Dropdown = Tabs.Misc:AddDropdown("Dropdown", {
+    Title = "Aimpart",
+    Description = " Where The Aimbot Script Would Lock At.",
+    Values = {"Head", "HumanoidRootPart"},
+    Multi = false,
+    Default = 1,
+    Callback = function(Value)
+        _G.AimPart = Value
+    end
+})
+
+local Section = Tabs.Misc:AddSection("FOV")
+local fov = 100
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local Cam = game.Workspace.CurrentCamera
+
+local FOVring = Drawing.new("Circle")
+FOVring.Visible = true
+FOVring.Thickness = 2
+FOVring.Color = Color3.fromRGB(128, 0, 128) -- Purple color
+FOVring.Filled = false
+FOVring.Radius = fov
+FOVring.Position = Cam.ViewportSize / 2
+
+local function updateDrawings()
+    local camViewportSize = Cam.ViewportSize
+    FOVring.Position = camViewportSize / 2
+end
+
+local function onKeyDown(input)
+    if input.KeyCode == Enum.KeyCode.Delete then
+        RunService:UnbindFromRenderStep("FOVUpdate")
+        FOVring:Remove()
+    end
+end
+
+UserInputService.InputBegan:Connect(onKeyDown)
+
+local Toggle = Tabs.Misc:AddToggle("FOV Visable", 
+{
+    Title = "FOV Visable", 
+    Description = "Determines Whether Or Not The Circle Is Visible.",
+    Default = false,
+    Callback = function(state)
+	if state then
+	    FOVring.Visible = true
+	else
+	    FOVring.Visible = false
+        end
+    end 
+})
+
+local Slider = Tabs.Misc:AddSlider("Slider", 
+{
+    Title = "FOV Radius",
+    Description = "The Radius Of The Circle / FOV.",
+    Default = 80,
+    Min = 0,
+    Max = 690,
+    Rounding = 1,
+    Callback = function(Value)
+        FOVring.Radius = Value
+    end
+})
+
+local Colorpicker = Tabs.Misc:AddColorpicker("Colorpicker", {
+    Title = "Colorpicker",
+    Description = "Color That The FOV Circle Would Appear As.",
+    Default = Color3.fromRGB(255, 255, 255),
+    Callback = function(color)
+        FOVring.Color = color
+    end
+})
+
+--// Teleports
+Tabs.Teleports:AddButton({
+    Title = "OnTopOfSpawn",
+    Description = "Teleports you OnTopOfSpawn.",
+    Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(85, 402, 23)
+    end
+})
+
+Tabs.Teleports:AddButton({
+    Title = "Battleground",
+    Description = "Teleports you Battleground.",
+    Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(49, 2, -4)
+    end
+})
+
+Tabs.Teleports:AddButton({
+    Title = "Spawn",
+    Description = "Teleports you Spawn.",
+    Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(3, 337, 69)
+    end
+})
+
+Tabs.Teleports:AddButton({
+    Title = "Wave 1",
+    Description = "Teleports you Wave 1.",
+    Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(23, 337, 71)
+    end
+})
+
+Tabs.Teleports:AddButton({
+    Title = "Wave 2",
+    Description = "Teleports you Wave 2.",
+    Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(64, 337, 71)
+    end
+})
+
+Tabs.Teleports:AddButton({
+    Title = "Wave 3",
+    Description = "Teleports you Wave 3.",
+    Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(112, 337, 70)
+    end
+})
+
+Tabs.Teleports:AddButton({
+    Title = "Wave 4",
+    Description = "Teleports you Wave 4.",
+    Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(162, 337, 70)
+    end
+})
+
+--// Player
+Tabs.Player:AddParagraph({
+    Title = "Movement",
+    Content = "WalkSpeed & JUmpPower"
+})
+
+local Slider = Tabs.Player:AddSlider("Slider", 
+{
+    Title = "WalkSpeed",
+    Description = "Go fast!",
+    Default = 16,
+    Min = 0,
+    Max = 500,
+    Rounding = 1,
+    Callback = function(Value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+    end
+})
+
+local Slider = Tabs.Player:AddSlider("Slider", 
+{
+    Title = "JumpPower",
+    Description = "Go High!",
+    Default = 50,
+    Min = 0,
+    Max = 1050,
+    Rounding = 1,
+    Callback = function(Value)
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+    end
+})
+
+Tabs.Player:AddButton({
+    Title = "Restore WalkSpeed & JumpPower",
+    Description = "Restores both.",
+    Callback = function()
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+    end
+})
+
+local Toggle = Tabs.Player:AddToggle("MyToggle", 
+{
+    Title = "Infinite Jump", 
+    Description = "Jump Forever! ( Buggy )",
+    Default = false,
+    Callback = function(state)
+	if state then
+	    local InfiniteJumpEnabled = true
+        game:GetService("UserInputService").JumpRequest:connect(function()
+            if InfiniteJumpEnabled then
+                game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+            end
+        end)
+	else
+	    InfiniteJumpEnabled = false
+        game:GetService("UserInputService").JumpRequest:connect(function()
+            if InfiniteJumpEnabled then
+                game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+            end
+        end)
+        end
+    end 
+})
+
+local Section = Tabs.Player:AddSection("Others")
+Tabs.Player:AddButton({
+    Title = "Rejoin",
+    Description = "Might take a couple of secounds.",
+    Callback = function()
+        local ts = game:GetService("TeleportService")
+
+local p = game:GetService("Players").LocalPlayer
+
+ 
+
+ts:Teleport(game.PlaceId, p)
+    end
+})
+
+Tabs.Player:AddButton({
+    Title = "Infinite Yield",
+    Description = "Cool script features.",
+    Callback = function()
+       loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+    end
+})
