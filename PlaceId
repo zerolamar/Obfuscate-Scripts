@@ -1,0 +1,6 @@
+local placeid = game.PlaceId
+if placeid == 6654918151 then --// Trench War
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/zerolamar/Obfuscate-Scripts/refs/heads/main/Trench%20War"))()
+elseif placeid == 3082002798 then --// T-Titans Battlegrounds
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/zerolamar/Obfuscate-Scripts/refs/heads/main/T-Titans%20Battlegrounds"))()
+end
