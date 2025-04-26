@@ -1,0 +1,567 @@
+if game.PlaceId == 116495829188952 then
+    wait(0.5)
+--// UI Library
+local Library = loadstring(game:HttpGet("https://github.com/1dontgiveaf/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1dontgiveaf/Fluent/main/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1dontgiveaf/Fluent/main/Addons/InterfaceManager.lua"))()
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+--// Windows
+local Window = Fluent:CreateWindow({
+    Title = "Dead Rails! | Nonchalant Hub",
+    SubTitle = "",
+    TabWidth = 150,
+    Size = UDim2.fromOffset(510, 450),
+    Acrylic = true,
+    Theme = "Darker",
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
+ --// Tabs
+local Tabs = {
+    Home = Window:AddTab({ Title = "Home", Icon = "home" }),
+    Lobby = Window:AddTab({ Title = "Lobby", Icon = "align-center" }),
+    Class = Window:AddTab({ Title = "Class", Icon = "user" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
+
+--// Home
+Tabs.Home:AddButton({
+    Title = "Copy Discord Invite",
+    Description = "Join .gg/Nonchalant, for more leaks!",
+    Callback = function()
+        setclipboard("https://discord.gg/SXEYSVEjh3")
+    end
+})
+
+Tabs.Home:AddParagraph({
+    Title = "Thank you for choosing us! 💝",
+    Content = "By @J0sh"
+})
+
+--// Lobby
+local Section = Tabs.Lobby:AddSection("Create Lobby")
+
+Tabs.Lobby:AddParagraph({
+    Title = "Note :",
+    Content = "This script is a bit buggy. And if it dosent seem to work, go closer to the lobby section. ( Still In Development )"
+})
+
+local FoundLobby = false
+local Toggle = Tabs.Lobby:AddToggle("MyToggle",
+{
+    Title = "Find Lobby", 
+    Description = "Automaticly finds the lobby.",
+    Default = false,
+    Callback = function(state)
+	if state then
+	    FoundLobby = true
+	else
+	   FoundLobby = false
+        end
+    end 
+})
+
+Tabs.Lobby:AddButton({
+    Title = "Goto Lobbies",
+    Description = "Teleports you to the lobbies area. ( Slow )",
+    Callback = function()
+        local ts = game:GetService("TweenService")
+
+local teleport = ts:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(22), {CFrame = CFrame.new(32.5268288, 7.5999999, 123.563789, 0.00872058235, 0, -0.999961972, 0, 1, 0, 0.999961972, 0, 0.00872058235)})
+teleport:Play()
+    end
+})
+
+
+local Section = Tabs.Class:AddSection("Get Class")
+Tabs.Class:AddParagraph({
+    Title = "Note :",
+    Content = "This will use your bonds, depending how much the class cost."
+})
+
+Tabs.Class:AddButton({
+    Title = "Buy None",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "None"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+Tabs.Class:AddButton({
+    Title = "Buy Horse",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "Horse"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+Tabs.Class:AddButton({
+    Title = "Buy Doctor",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "Doctor"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+Tabs.Class:AddButton({
+    Title = "Buy Musician",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "Musician"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+
+Tabs.Class:AddButton({
+    Title = "Buy Miner",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "Miner"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+
+Tabs.Class:AddButton({
+    Title = "Buy Arsonist",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "Arsonist"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+Tabs.Class:AddButton({
+    Title = "Buy Packmaster",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "Packmaster"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+Tabs.Class:AddButton({
+    Title = "Buy Necromancer",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "Necromancer"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+Tabs.Class:AddButton({
+    Title = "Buy Conductor",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "Conductor"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+Tabs.Class:AddButton({
+    Title = "Buy Alamo",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "Alamo"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+Tabs.Class:AddButton({
+    Title = "Buy High Roller",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "HighRoller"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+Tabs.Class:AddButton({
+    Title = "Buy Cowboy",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "Cowboy"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+Tabs.Class:AddButton({
+    Title = "Buy Werewolf",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "Werewolf"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+Tabs.Class:AddButton({
+    Title = "Buy Priest",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "Priest"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+Tabs.Class:AddButton({
+    Title = "Buy Survivalist",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "Survivalist"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+Tabs.Class:AddButton({
+    Title = "Buy Vampire",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "Vampire"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+Tabs.Class:AddButton({
+    Title = "Buy Zombie",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "Zombie"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+Tabs.Class:AddButton({
+    Title = "Buy Ironclad",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "Ironclad"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+Tabs.Class:AddButton({
+    Title = "Buy Eggslinger",
+    Description = "Automaticly buys for you.",
+    Callback = function()
+        local args = {
+        [1] = "Eggslinger"
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_BuyClass"):FireServer(unpack(args))
+    end
+})
+
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+
+SaveManager:IgnoreThemeSettings()
+
+
+SaveManager:SetIgnoreIndexes({})
+
+InterfaceManager:SetFolder("FluentScriptHub")
+SaveManager:SetFolder("FluentScriptHub/specific-game")
+
+InterfaceManager:BuildInterfaceSection(Tabs.Settings)
+SaveManager:BuildConfigSection(Tabs.Settings)
+
+
+Window:SelectTab(1)
+
+SaveManager:LoadAutoloadConfig()
+
+--// Find Lobby
+ local CreateParty = game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("RemotePromise"):WaitForChild("Remotes"):WaitForChild("C_CreateParty")
+ local HRP = game.Players.LocalPlayer.Character.HumanoidRootPart
+
+
+    while task.wait(Cooldown) do
+        if FoundLobby == true then
+            for i,v in pairs(game:GetService("Workspace").TeleportZones:GetChildren()) do
+                if v.Name == "TeleportZone" and v.BillboardGui.StateLabel.Text == "Waiting for players..." then
+                    HRP.CFrame = v.ZoneContainer.CFrame
+                    FoundLobby = true
+                    task.wait(1)
+                    CreateParty:FireServer({["maxPlayers"] = 1})
+                 end
+              end
+           end
+        end
+
+elseif game.PlaceId == 70876832253163 then
+local Library = loadstring(game:HttpGet("https://github.com/1dontgiveaf/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1dontgiveaf/Fluent/main/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/1dontgiveaf/Fluent/main/Addons/InterfaceManager.lua"))()
+
+local Window = Fluent:CreateWindow({
+    Title = "Dead Rails | Nonchalant Hub",
+    SubTitle = "",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = true,
+    Theme = "Darker",
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
+
+local Tabs = {
+    Autofarm = Window:AddTab({ Title = "Autofarm", Icon = "accessibility" }),
+    Challenge = Window:AddTab({ Title = "Challenges", Icon = "laugh" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
+
+--// Autofarm
+local Section = Tabs.Autofarm:AddSection("Autofarm Bonds")
+
+local Toggle = Tabs.Autofarm:AddToggle("MyToggle", 
+{
+    Title = "Collect Bonds", 
+    Description = "If script automatic leaves for you then its having problems. ( Beta )",
+    Default = false,
+    Callback = function(state)
+	if state then
+        loadstring(game:HttpGet("https://pastebin.com/raw/gE2dYCNr"))()
+loadstring(game:HttpGet("https://pastebin.com/raw/bbhiGgxs"))()
+	else
+	    Fluent:Notify({
+        Title = "Error",
+        Content = "Can not turn off | Autofarm Bonds |",
+        Duration = 9
+    })
+        end
+    end 
+})
+
+local Toggle = Tabs.Autofarm:AddToggle("Toggle", 
+{
+    Title = "Win Game", 
+    Description = "Wait till 10mins before clicking ( Recommended )",
+    Default = false,
+    Callback = function(state)
+	if state then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-424.448975, 28.055481, -49040.6562, -1, 0, 0, 0, 1, 0, 0, 0, -1)
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local rootPart = character:WaitForChild("HumanoidRootPart")
+
+-- Freeze
+rootPart.Anchored = true
+humanoid.WalkSpeed = 0
+humanoid.JumpPower = 0
+
+wait(10)
+
+-- Unfreeze
+rootPart.Anchored = false
+humanoid.WalkSpeed = 16 
+humanoid.JumpPower = 50
+wait(0.5)
+game.Players.LocalPlayer.Character.Humanoid.Jump = true
+wait(1)
+local ts = game:GetService("TweenService")
+
+local teleport = ts:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(6), {CFrame = CFrame.new(-350.900696, 2.99993873, -49040.918, 0.998121321, -2.62078093e-08, 0.061268609, 2.48097507e-08, 1, 2.35792417e-08, -0.061268609, -2.20148859e-08, 0.998121321)})
+teleport:Play()
+	else
+	    Fluent:Notify({
+        Title = "Error",
+        Content = "Can not turn off.",
+        Duration = 9
+    })
+        end
+    end 
+})
+
+local Section = Tabs.Challenge:AddSection("Mission Badges")
+Tabs.Challenge:AddParagraph({
+    Title = "More Coming Soon...",
+    Content = "More missions will be coming out later this year."
+})
+
+Tabs.Challenge:AddButton({
+    Title = "Bounty Hunter",
+    Description = "@J0sh",
+    Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-424.448975, 28.055481, -49040.6562, -1, 0, 0, 0, 1, 0, 0, 0, -1)
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local rootPart = character:WaitForChild("HumanoidRootPart")
+
+-- Freeze
+rootPart.Anchored = true
+humanoid.WalkSpeed = 0
+humanoid.JumpPower = 0
+
+wait(10)
+
+-- Unfreeze
+rootPart.Anchored = false
+humanoid.WalkSpeed = 16 
+humanoid.JumpPower = 50
+wait(30)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(59.67202, 11.9694252, 29872.9336, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+    end
+})
+
+Tabs.Challenge:AddParagraph({
+    Title = "How to Complete",
+    Content = "Firstly get an revolver and two revolver ammo. And kill 5 Bandits store them. Then lastly collet their bounty from the sheriffs office. [ You will only have 30 Secounds/DONT DRIVE THE TRAIN! ] "
+})
+
+Tabs.Challenge:AddButton({
+    Title = "Escape",
+    Description = "@J0sh",
+    Callback = function()
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-424.448975, 28.055481, -49040.6562, -1, 0, 0, 0, 1, 0, 0, 0, -1)
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local rootPart = character:WaitForChild("HumanoidRootPart")
+
+-- Freeze
+rootPart.Anchored = true
+humanoid.WalkSpeed = 0
+humanoid.JumpPower = 0
+
+wait(10)
+
+-- Unfreeze
+rootPart.Anchored = false
+humanoid.WalkSpeed = 16 
+humanoid.JumpPower = 50
+wait(0.5)
+game.Players.LocalPlayer.Character.Humanoid.Jump = true
+wait(1)
+local ts = game:GetService("TweenService")
+
+local teleport = ts:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(6), {CFrame = CFrame.new(-350.900696, 2.99993873, -49040.918, 0.998121321, -2.62078093e-08, 0.061268609, 2.48097507e-08, 1, 2.35792417e-08, -0.061268609, -2.20148859e-08, 0.998121321)})
+teleport:Play()
+    end
+})
+
+Tabs.Challenge:AddParagraph({
+    Title = "How to Complete",
+    Content = "Get an a revolver and 2 ammo. Kill all the bandits. Loot the houses and lower the crank. [ You will have to wait 10mins before executing ]"
+})
+
+Tabs.Challenge:AddButton({
+    Title = "Tame a Unicorn",
+    Description = "@J0sh",
+    Callback = function()
+        local ts = game:GetService("TweenService")
+local teleport = ts:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(15), {CFrame = CFrame.new(139.921265, 3.50003767, 29925.5566, -0.0452982895, 6.15494784e-08, -0.998973489, -5.7081234e-08, 1, 6.42010676e-08, 0.998973489, 5.99308407e-08, -0.0452982895)})
+teleport:Play()
+wait(20)
+local ts = game:GetService("TweenService")
+local teleport = ts:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(15), {CFrame = CFrame.new(141.509705, 5.95214605, 29810.918, -0.999958396, -7.83460621e-08, 0.00912454445, -7.85070569e-08, 1, -1.72859274e-08, -0.00912454445, -1.80015505e-08, -0.999958396)})
+teleport:Play()
+    end
+})
+
+Tabs.Challenge:AddParagraph({
+    Title = "How to Complete",
+    Content = "Sell the gold buy a saddle and find a unicorn to tame, you will have to put the saddle on the unicorn before it can be tamed. [ DONT KILL IT! ]"
+})
+
+Tabs.Challenge:AddButton({
+    Title = "Dance with Wolves",
+    Description = "@J0sh",
+    Callback = function()
+      Fluent:Notify({
+        Title = "Class Needed!",
+        Content = "Equip the packmaster class then run into a bunch of wolfs. [ not the big ones ] ",
+        Duration = 3
+    })
+wait(5)
+game:GetService("TeleportService"):Teleport(116495829188952, game:GetService("Players").LocalPlayer)
+     end
+})
+
+Tabs.Challenge:AddParagraph({
+    Title = "How to Complete",
+    Content = "If you have the packmaster class on then pack yourself with a bunch of bandages ( 4 ) then run into the wolfs. [ They will take damage just a bit ]"
+})
+
+
+
+
+--// Settings
+
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+
+SaveManager:IgnoreThemeSettings()
+
+
+SaveManager:SetIgnoreIndexes({})
+
+InterfaceManager:SetFolder("FluentScriptHub")
+SaveManager:SetFolder("FluentScriptHub/specific-game")
+
+InterfaceManager:BuildInterfaceSection(Tabs.Settings)
+SaveManager:BuildConfigSection(Tabs.Settings)
+
+
+Window:SelectTab(1)
+
+SaveManager:LoadAutoloadConfig()
+end
